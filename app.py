@@ -208,9 +208,9 @@ with tab3:
         
         # Daftar kolom kategorikal 
         cat_options = [
-            'Contract', 'InternetService', 'OnlineSecurity', 
-            'OnlineBackup', 'DeviceProtection', 'TechSupport', 
-            'PaperlessBilling', 'Dependents'
+            'Dependents', 'OnlineSecurity', 'OnlineBackup', 
+            'InternetService', 'DeviceProtection', 'TechSupport', 
+            'Contract', 'PaperlessBilling'
         ]
         
         selected_cat = st.selectbox("Pilih faktor yang ingin dianalisis:", cat_options, index=0)
@@ -273,20 +273,25 @@ with tab3:
             # Encoding Manual
             binary_mapping = {'Yes': 1, 'No': 0, 'No internet service': 0}
             
-            # Terapkan ke kolom-kolom biner
-            binary_cols = ['Dependents', 'OnlineSecurity', 'OnlineBackup', 
+            # kolom-kolom biner
+            binary_cols = ['Dependents', 'OnlineSecurity', 'OnlineBackup',
                            'DeviceProtection', 'TechSupport', 'PaperlessBilling', 'Churn']
             
             for col in binary_cols:
                 if col in df_corr.columns:
                     df_corr[col] = df_corr[col].map(binary_mapping)
             
-            # Mapping khusus untuk Contract 
+            # Mapping khusus Contract 
             contract_mapping = {'Month-to-month': 0, 'One year': 1, 'Two year': 2}
             if 'Contract' in df_corr.columns:
                 df_corr['Contract'] = df_corr['Contract'].map(contract_mapping)
             
-            cols_to_correlate = ['tenure', 'MonthlyCharges', 'Contract'] + binary_cols
+            # Mapping khusus InternetService
+            internet_mapping = {'No': 0, 'DSL': 1, 'Fiber optic': 2}
+            if 'InternetService' in df_corr.columns:
+                df_corr['InternetService'] = df_corr['InternetService'].map(internet_mapping)
+            
+            cols_to_correlate = ['tenure', 'MonthlyCharges', 'Contract', 'InternetService'] + binary_cols
             
             # Validasi kolom di dataframe
             valid_cols = [c for c in cols_to_correlate if c in df_corr.columns]
