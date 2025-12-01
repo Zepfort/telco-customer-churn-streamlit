@@ -8,7 +8,6 @@ import plotly.express as px
 # Konfigurasi Halaman
 st.set_page_config(
     page_title="Telco Churn Prediction",
-    page_icon="📡",
     layout="wide" 
 )
 
@@ -29,24 +28,24 @@ def load_data():
 try:
     pipeline = load_pipeline()
 except FileNotFoundError:
-    st.error("File model tidak ditemukan. Pastikan path './models/churn_prediction_model.joblib' benar.")
+    st.error("File model tidak ditemukan.")
     st.stop()
 
 try:
     df_eda = load_data()
 except FileNotFoundError:
-    st.warning("File CSV dataset tidak ditemukan. Fitur EDA tidak dapat ditampilkan.")
+    st.warning("File CSV dataset tidak ditemukan. EDA tidak dapat ditampilkan")
     df_eda = None
 
 # 3. Judul
-st.title("📡 Telco Customer Churn Dashboard")
-st.markdown("Aplikasi prediksi churn pelanggan dan analisis data eksploratif.")
+st.title("Telco Customer Churn Dashboard")
+st.markdown("Dashboard prediksi churn pelanggan dan analisis data .")
 
 # Tab
-tab1, tab2, tab3 = st.tabs(["Bussines Understanding", "EDA & Visualisasi", "Prediksi Churn"])
+tab1, tab2, tab3, tab4 = st.tabs(["Bussines Understanding","Data Overview", "EDA & Visualisasi", "Prediksi Churn"])
 
 
-# TAB 1: Bussiness Understanding
+# Tab 1: Bussiness Understanding
 with tab1:
     st.header("Business Understanding")
     
@@ -68,17 +67,59 @@ with tab1:
     Perusahaan telekomunikasi sering menghadapi masalah *customer churn* (pelanggan berhenti berlangganan). 
     Churn ini berdampak langsung pada pendapatan dan stabilitas bisnis. 
     
-    Proyek ini bertujuan membangun sistem prediksi churn berdasarkan fitur pelanggan 
-    (durasi layanan, jenis kontrak, layanan internet, dsb), sehingga perusahaan bisa:
+    Dengan model prediksi, perusahaan bisa:
     
-    * 1. **Mengidentifikasi** pelanggan yang berisiko churn secara dini.
-    * 2. **Melakukan strategi retensi** atau penawaran ulang layanan secara proaktif.
-    * 3. **Mengurangi biaya** akuisisi pelanggan baru.
-    * 4. **Meningkatkan loyalitas** dan profitabilitas.
+    1. **Mengidentifikasi** pelanggan yang berisiko churn secara dini.
+    2. **Melakukan strategi retensi** atau penawaran ulang layanan secara aktif.
+    3. **Mengurangi biaya** akuisisi pelanggan baru.
+    4. **Meningkatkan loyalitas** pelanggan dan profit perusahaan.
     """)
-# TAB 2: EDA Interaktif 
-
+    
+    
 with tab2:
+    st.header("Data Overview")
+    
+    df_raw = pd.read_csv('./data/data_telco_customer_churn.csv')
+    total_raw = df_raw.shape[0]
+    total_clean = df_eda.shape[0]
+    total_dropped = total_raw - total_clean
+    
+    st.subheader("Cuplikan Dataset")
+    col_m1, col_m2, col_m3 = st.columns(3)
+    
+    with col_m1:
+        st.metric(label="Total Data Asli", value=f"{total_raw}", help="Jumlah baris sebelum cleaning")
+        
+    with col_m2:
+        st.metric(label="Data Bersih", value=f"{total_clean}", help="Jumlah baris setelah drop duplikat")
+        
+    with col_m3:
+        st.metric(label="Data dibuang (Duplikat)",  value=f"{total_dropped}", delta_color="inverse")
+        
+    st.markdown("---")
+    
+    # Tabel 5 dataset teratas
+    st.caption("Menampilkan 5 baris pertama dari dataset.")
+    st.dataframe(df_eda.head())
+    
+    # Tabel Jenis Data
+    st.subheader("Informasi Jenis Data")
+    
+    dtype_df = df_eda.dtypes.astype(str).reset_index()
+    dtype_df.columns = ["Nana Kolom", "Tipe Data"]
+    st.dataframe(dtype_df, hide_index=True, use_container_width=True)
+        
+    st.markdown("---")
+
+    
+    st.subheader("Statistik Deskriptif")
+    
+    desc_df = df_eda.describe().T
+    st.dataframe(desc_df, use_container_width=True)
+
+# Tab 3: EDA Interaktif 
+
+with tab3:
     if df_eda is not None:
         st.header("Exploratory Data Analysis (Interaktif)")
         
@@ -165,7 +206,7 @@ with tab2:
         # Analisis fitur kategorikal
         st.subheader("3. Analisis Faktor Kategorikal Lainnya")
         
-        # Pilihan kolom kategorikal yang menarik untuk dianalisis
+        # Daftar kolom kategorikal 
         cat_options = [
             'Contract', 'InternetService', 'OnlineSecurity', 
             'OnlineBackup', 'DeviceProtection', 'TechSupport', 
@@ -248,9 +289,9 @@ with tab2:
     else:
         st.info("Silakan upload file 'data_telco_customer_churn.csv' ke direktori proyek untuk melihat visualisasi.")
 
-# TAB 3: Prediksi Churn 
+# Tab 4: Prediksi Churn 
 
-with tab3:
+with tab4:
     col_input, col_result = st.columns([1, 2], gap="large")
     
     with col_input:
@@ -274,7 +315,7 @@ with tab3:
 
     with col_result:
         if predict_btn:
-            # Dataframe untuk input model
+            # Dataframe input model
             input_data = {
                 'Dependents': dependents,
                 'tenure': tenure,
@@ -326,4 +367,4 @@ with tab3:
 
 # Footer
 st.markdown("---")
-st.caption("Alif Januar Rizky - Mini Project Scripting Language - Machine Learning Classification")
+st.caption("Mini Project Scripting Language - Machine Learning Classification")
