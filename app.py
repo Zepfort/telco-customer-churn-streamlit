@@ -265,29 +265,52 @@ with tab3:
 
         # Korelasi numerik
         st.subheader("5. Korelasi Fitur Numerik")
+        st.caption("Heatmap ini mengonversi data kategori menjadi angka agar bisa melihat hubungan antar semua variabel.")
         
-
         if len(df_filtered) > 0:
-            numeric_cols = ['tenure', 'MonthlyCharges']
-            numeric_df = df_filtered[numeric_cols].copy()
+            df_corr = df_filtered.copy()
             
-            if 'Churn' in df_filtered.columns:
-                 numeric_df['Churn_Score'] = df_filtered['Churn'].map({'Yes': 1, 'No': 0})
+            # Encoding Manual
+            binary_mapping = {'Yes': 1, 'No': 0, 'No internet service': 0}
             
-            corr_matrix = numeric_df.corr().round(2)
+            # Terapkan ke kolom-kolom biner
+            binary_cols = ['Dependents', 'OnlineSecurity', 'OnlineBackup', 
+                           'DeviceProtection', 'TechSupport', 'PaperlessBilling', 'Churn']
             
+            for col in binary_cols:
+                if col in df_corr.columns:
+                    df_corr[col] = df_corr[col].map(binary_mapping)
+            
+            # Mapping khusus untuk Contract 
+            contract_mapping = {'Month-to-month': 0, 'One year': 1, 'Two year': 2}
+            if 'Contract' in df_corr.columns:
+                df_corr['Contract'] = df_corr['Contract'].map(contract_mapping)
+            
+            cols_to_correlate = ['tenure', 'MonthlyCharges', 'Contract'] + binary_cols
+            
+            # Validasi kolom di dataframe
+            valid_cols = [c for c in cols_to_correlate if c in df_corr.columns]
+            
+            # Hitung Korelasi
+            corr_matrix = df_corr[valid_cols].corr().round(2)
+            
+            # Plot
             fig_heatmap = px.imshow(
                 corr_matrix,
                 text_auto=True,
                 aspect="auto",
-                color_continuous_scale='RdBu_r',
+                color_continuous_scale='RdBu_r', 
+                zmin=-1, zmax=1, 
                 origin='lower',
-                title="Hubungan Tenure & MonthlyCharges terhadap Churn"
+                title="Peta Hubungan Antar Semua Variabel"
             )
+            
+            fig_heatmap.update_layout(height=600)
+            
             st.plotly_chart(fig_heatmap, use_container_width=True)
 
     else:
-        st.info("Silakan upload dataset 'data_telco_customer_churn.csv' untuk melihat visualisasi.")
+        st.info("Silakan upload dataset...")
 
 # Tab 4: Prediksi Churn 
 
