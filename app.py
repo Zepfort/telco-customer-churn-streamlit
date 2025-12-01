@@ -243,7 +243,7 @@ with tab3:
         st.markdown("---")
 
         # Distribusi Tenure
-        st.subheader("4. Lama pelanggan berlangganan")
+        st.subheader("4. Durasi Pelanggan Berlangganan")
         
         if len(df_filtered) > 0:
             fig_tenure = px.histogram(
@@ -282,12 +282,12 @@ with tab3:
                 aspect="auto",
                 color_continuous_scale='RdBu_r',
                 origin='lower',
-                title="Seberapa kuat hubungan Tenure & Biaya terhadap Churn?"
+                title="Hubungan Tenure & MonthlyCharges terhadap Churn"
             )
             st.plotly_chart(fig_heatmap, use_container_width=True)
 
     else:
-        st.info("Silakan upload file 'data_telco_customer_churn.csv' ke direktori proyek untuk melihat visualisasi.")
+        st.info("Silakan upload dataset 'data_telco_customer_churn.csv' untuk melihat visualisasi.")
 
 # Tab 4: Prediksi Churn 
 
