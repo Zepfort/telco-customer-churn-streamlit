@@ -136,7 +136,7 @@ with tab3:
             # Filter 1: Kontrak 
             with col_filter1:
                 filter_contract = st.multiselect(
-                    "Pilih Jenis Kontrak:",
+                    "Jenis Kontrak:",
                     options=df_eda['Contract'].unique(),
                     default=df_eda['Contract'].unique()
                 )
@@ -144,7 +144,7 @@ with tab3:
             # Filter 2: Layanan Internet
             with col_filter2:
                 filter_service = st.multiselect(
-                    "Pilih Layanan Internet:",
+                    "Layanan Internet:",
                     options=df_eda['InternetService'].unique(),
                     default=df_eda['InternetService'].unique()
                 )
@@ -243,7 +243,7 @@ with tab3:
         st.markdown("---")
 
         # Distribusi Tenure
-        st.subheader("4. Apakah Pelanggan Baru Lebih Mudah Churn?")
+        st.subheader("4. Lama pelanggan berlangganan")
         
         if len(df_filtered) > 0:
             fig_tenure = px.histogram(
@@ -264,7 +264,7 @@ with tab3:
         st.markdown("---")
 
         # Korelasi numerik
-        st.subheader("4. Korelasi Fitur Numerik")
+        st.subheader("5. Korelasi Fitur Numerik")
         
 
         if len(df_filtered) > 0:
