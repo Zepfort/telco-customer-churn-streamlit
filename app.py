@@ -264,8 +264,8 @@ with tab3:
         st.markdown("---")
 
         # Korelasi numerik
-        st.subheader("5. Korelasi Fitur Numerik")
-        st.caption("Heatmap ini mengonversi data kategori menjadi angka agar bisa melihat hubungan antar semua variabel.")
+        st.subheader("5. Korelasi Semua Fitur")
+        st.caption("Heatmap ini mengonversi data kategori menjadi angka agar bisa melihat hubungan antar semua fitur")
         
         if len(df_filtered) > 0:
             df_corr = df_filtered.copy()
