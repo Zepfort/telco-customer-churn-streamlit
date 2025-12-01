@@ -11,7 +11,7 @@ st.set_page_config(
     layout="wide" 
 )
 
-# Load Model & Data
+# Load Model 
 @st.cache_resource
 def load_pipeline():
     return joblib.load('./models/churn_prediction_model.joblib')
@@ -37,7 +37,7 @@ except FileNotFoundError:
     st.warning("File CSV dataset tidak ditemukan. EDA tidak dapat ditampilkan")
     df_eda = None
 
-# 3. Judul
+# Judul
 st.title("Telco Customer Churn Dashboard")
 st.markdown("Dashboard prediksi churn pelanggan dan analisis data .")
 
@@ -47,9 +47,9 @@ tab1, tab2, tab3, tab4 = st.tabs(["Bussines Understanding","Data Overview", "EDA
 
 # Tab 1: Bussiness Understanding
 with tab1:
-    st.header("Business Understanding")
+    st.header("Deskripsi Model")
     
-    # Bagian Ringkasan Teknis (Menggunakan st.info agar terlihat rapi)
+    # Bagian Ringkasan Teknis 
     st.info("""
     **Model klasifikasi churn pelanggan untuk perusahaan telekomunikasi**
     
@@ -61,8 +61,8 @@ with tab1:
     
     st.markdown("---")
     
-    # Bagian Deskripsi Proyek
-    st.subheader("Deskripsi Proyek")
+    # Deskripsi Proyek
+    st.subheader("Business Understanding")
     st.markdown("""
     Perusahaan telekomunikasi sering menghadapi masalah *customer churn* (pelanggan berhenti berlangganan). 
     Churn ini berdampak langsung pada pendapatan dan stabilitas bisnis. 
