@@ -47,32 +47,17 @@ tab1, tab2, tab3, tab4 = st.tabs(["Bussines Understanding","Data Overview", "EDA
 
 # Tab 1: Bussiness Understanding
 with tab1:
-    st.header("Deskripsi Model")
-    
-    # Bagian Ringkasan Teknis 
-    st.info("""
-    **Model klasifikasi churn pelanggan untuk perusahaan telekomunikasi**
-    
-    **Menggunakan:**
-    * Preprocessing (StandardScaler + One-Hot Encoding)
-    * Resampling data dengan **ADASYN** untuk menangani ketidakseimbangan kelas
-    * Model klasifikasi yang dipilih: **Logistic Regression + ADASYN**
-    """)
-    
-    st.markdown("---")
-    
-    # Deskripsi Proyek
-    st.subheader("Business Understanding")
+    st.header("Bussiness Understanding")    
+    # Deskripsi 
     st.markdown("""
-    Perusahaan telekomunikasi sering menghadapi masalah *customer churn* (pelanggan berhenti berlangganan). 
-    Churn ini berdampak langsung pada pendapatan dan stabilitas bisnis. 
-    
-    Dengan model prediksi, perusahaan bisa:
-    
-    1. **Mengidentifikasi** pelanggan yang berisiko churn secara dini.
-    2. **Melakukan strategi retensi** atau penawaran ulang layanan secara aktif.
-    3. **Mengurangi biaya** akuisisi pelanggan baru.
-    4. **Meningkatkan loyalitas** pelanggan dan profit perusahaan.
+    Perusahaan telekomunikasi sering menghadapi tantangan **customer churn** (pelanggan berhenti berlangganan).  
+    Dengan melakukan **analisis data terlebih dahulu**  perusaahan bisa mendapatkan informasi penting berupa:
+
+    1. **Memahami karakteristik pelanggan** seperti berapa lama mereka berlangganan, berapa biaya bulanan yang umum, jenis layanan dan kontrak yang paling dominan.  
+    2. **Menemukan pola churn** pada rentang tenure atau segmen layanan tertentu yang punya risiko lebih tinggi.  
+    3. **Mengidentifikasi grup pelanggan rentan churn** untuk target promosi atau evaluasi ulang layanan.  
+    4. **Mengevaluasi struktur layanan dan harga** dengan melihat pelanggan dengan biaya bulanan tinggi atau layanan tertentu lebih sering churn.  
+    5. **Menyediakan dasar keputusan bisnis berbasis data** agar strategi  promosi, atau perubahan layanan didukung analisis nyata, bukan asumsi semata.
     """)
     
     
@@ -321,6 +306,31 @@ with tab3:
 
 with tab4:
     col_input, col_result = st.columns([1, 2], gap="large")
+    
+    st.header("Deskripsi model")
+    # Ringkasan Teknis 
+    st.info("""
+    **Model klasifikasi churn pelanggan untuk perusahaan telekomunikasi**
+    
+    **Menggunakan:**
+    * Preprocessing (StandardScaler + One-Hot Encoding)
+    * Resampling data dengan **ADASYN** untuk menangani ketidakseimbangan kelas
+    * Model klasifikasi yang dipilih: **Logistic Regression + ADASYN**
+    """)
+    
+    # Ringkasan Evaluasi
+    st.markdown("""
+    ### Hasil Evaluasi Model
+
+    - **Akurasi keseluruhan:** 73.4%  
+    - **Recall pelanggan churn (kelas 1):** 80%, artinya model berhasil mendeteksi 80% pelanggan yang kemungkinan akan churn.  
+    - **Precision churn:** 51%, dari pelanggan yang diprediksi churn, sekitar setengah benar-benar churn.  
+    - **F1-score churn:** 62%, keseimbangan antara precision & recall.  
+
+    > Catatan: karena data latih di-resample dengan ADASYN, hasil ini lebih tinggi dalam mendeteksi churn, namun kemungkinan false positive cukup tinggi (pelanggan loyal yang salah terprediksi churn).  
+    """)
+    
+    st.markdown("---")
     
     with col_input:
         st.subheader("Input Data Pelanggan")
