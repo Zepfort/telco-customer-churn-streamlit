@@ -305,7 +305,7 @@ with tab3:
 # Tab 4: Prediksi Churn 
 
 with tab4:
-    col_input, col_result = st.columns([1, 2], gap="large")
+    
     
     st.header("Deskripsi model")
     # Ringkasan Teknis 
@@ -332,6 +332,7 @@ with tab4:
     
     st.markdown("---")
     
+    col_input, col_result = st.columns([1, 2], gap="large")
     with col_input:
         st.subheader("Input Data Pelanggan")
         
